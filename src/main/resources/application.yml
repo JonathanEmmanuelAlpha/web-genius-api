@@ -8,7 +8,7 @@ spring:
   data:
     mongodb:
       database: web-genius
-      uri: mongodb+srv://emmanueljonathant453:BLQZOTm2MOTZUM1n@grounddata.qepd9bf.mongodb.net/
+      uri: mongodb+srv://<mongodb_user>:<mongo_dbpassword>@<mongodb_rui>
 
 
 application:
