@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        lang="en"
+>
+<head th:fragment="headerAttr (title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Web Genius</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+</head>
+<body>
+    <div th:fragment="accountLinks"
+            class="flex flex-wrap items-center justify-evenly gap-4"
+    >
+        <a
+            class="
+                w-max block px-4 py-2 rounded-full text-center border-2 border-[--primary-color]
+                text-[--primary-color] hover:bg-[--primary-color] hover:text-slate-50
+            "
+            th:href="@{/account/signup}"
+        >
+            S'inscrire
+        </a>
+        <a
+            class="
+                w-max block px-4 py-2 rounded-full text-center border-2 border-transparent bg-[--primary-color]
+                text-slate-50 hover:bg-transparent hover:text-[--primary-color] hover:border-[--primary-color]
+            "
+            th:href="@{/account/login}"
+        >
+            Se connecter
+        </a>
+    </div>
+    <div th:fragment="accountOptions"
+         class="flex flex-wrap items-center justify-evenly gap-4"
+    >
+        <a
+            th:if="${not user.roles.contains('AUTHOR')}"
+            class="
+                w-max block px-4 py-2 rounded-full text-center border-2 border-transparent bg-green-600
+                text-slate-50 hover:bg-transparent hover:text-green-600 hover:border-green-600
+            "
+            th:href="@{/account/author-request}"
+        >
+            Devenir auteur
+        </a>
+        <a
+                class="
+                w-max block px-4 py-2 rounded-full text-center border-2 border-transparent bg-red-500
+                text-slate-50 hover:bg-transparent hover:text-red-500 hover:border-red-500
+            "
+                th:href="@{/account/logout}"
+        >
+            Se déconnecter
+        </a>
+    </div>
+
+    <header th:fragment="header"
+            class="w-full h-[--header-height] flex items-center justify-between bg-slate-50 p-3 shadow-sm sticky top-0 z-50"
+    >
+      <span class="uppercase text-xl font-semibold">
+        <span class="">Web</span>
+        <span class="text-[--primary-color]">Genius</span>
+      </span>
+        <div class="flex items-center gap-4">
+            <nav>
+                <ul class="flex items-center justify-center">
+                    <li>
+                        <a
+                            th:href="@{/}"
+                            aria-disabled="true"
+                            class="block px-4 py-2 text-indigo-800 capitalize transition-all duration-200 hover:text-indigo-600"
+                        >
+                            Accueil
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            th:href="@{/dashboard}"
+                            aria-disabled="true"
+                            class="block px-4 py-2 text-indigo-800 capitalize transition-all duration-200 hover:text-indigo-600"
+                        >
+                            Dashboard
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div th:if="${user}">
+                <div th:replace=" :: accountLogout"></div>
+            </div>
+            <div th:if="${not user}">
+                <div th:replace=" :: accountLinks"></div>
+            </div>
+        </div>
+    </header>
+
+    <footer th:fragment="footer"
+            class="w-full p-6 bg-slate-700 text-center text-slate-50 text-xl"
+    >
+        <h2>Copyright &copy; Web Genius 2024 All rights reserved</h2>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en"
+>
+<head th:replace="fragments/ui/general :: headerAttr('Dashboard')"></head>
+<body class="bg-slate-200 relative">
+    <div th:replace="fragments/ui/general :: header"></div>
+
+    <div class="flex relative">
+        <div th:replace="fragments/ui/sidebar :: nav(expanded=true)"></div>
+
+        <div class="w-full p-4">
+            <div class="max-w-[1024px] mx-auto my-0">
+                <h2 class="text-center uppercase py-4 text-xl text-[--primary-color] font-medium">
+                    Demandes d'auteurs
+                </h2>
+                <div class="w-full my-2">
+                    <p class="max-w-[500px] shadow border bg-slate-50 text-slate-600 leading-7 p-4">
+                        Ci-dessous la listes de toutes les demandes d'auteurs n'ayant
+                        actuellement recues aucune réponses de la part des administrateurs.
+                    </p>
+                </div>
+
+                <div th:each="target : ${targets}">
+                    <div class="flex flex-wrap items-center justify-center gap-6 py-8">
+                        <div class="w-72 bg-white flex flex-col justify-center items-center p-4 rounded shadow gap-4">
+                            <img
+                                th:src="@{/img/{picture}(picture=${target.picture})}"
+                                alt="User avatar"
+                                class="w-20 h-20 rounded-full shadow "
+                            >
+                            <span class="text-slate-700 text-lg capitalize" th:text="${target.pseudo}">pseudo</span>
+                            <span class="text-slate-500" th:text="${targetDate}">AT}</span>
+                            <a
+                                href="@{http://localhost:8080/account/profile/{pseudo}(pseudo=${pseudo})}"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="text-[--primary-color] px-3 capitalize font-semibold"
+                            >
+                                <span>Consulter profile</span>
+                            </a>
+                            <div class="flex items-center justify-between gap-2">
+                                <button class="px-4 py-1.5 rounded-3xl text-white bg-green-500">
+                                    Accepter
+                                </button>
+                                <button class="px-4 py-1.5 rounded-3xl text-white bg-red-500">
+                                    Rejetter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/ui/general :: footer"></div>
+</body>
+</html>

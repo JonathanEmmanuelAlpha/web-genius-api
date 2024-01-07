@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        lang="en"
+>
+<head th:replace="fragments/ui/general :: headerAttr('Web Genius | Signup')"></head>
+<body class="bg-slate-200 relative">
+<div th:replace="fragments/ui/general :: header"></div>
+
+<div class="ideal-h p-4 my-0 mx-auto flex items-center justify-center">
+    <img
+            class="w-[434px] acc-cust-h object-cover"
+            th:src="@{/img/R.jpg}"
+            alt="account banner"
+    >
+    <div class="w-[434px] acc-cust-h p-4 flex flex-col items-center justify-center bg-slate-50  shadow-lg rounded">
+        <div class="w-full">
+            <h1 class="text-center text-2xl text-[--primary-color] m-0 mb-8">
+                Se connecter
+            </h1>
+            <form
+                    method="post"
+                    role="form"
+                    th:action="@{/account/login}"
+                    th:object="${user}"
+            >
+                <div class="my-3 min-w-[320px]">
+                    <div class="shadow rouded bg-white px-4 py-2 rounded">
+                        <div class="bg-slate-50 w-max text-slate-600 p-1.5 text-sm mb-1 rounded-md flex items-center gap-1 text-start">
+                            <label class="cursor-pointer" th:for="username">
+                                Addresse email
+                            </label>
+                            <strong class="text-red-400">*</strong>
+                        </div>
+                        <input
+                                class="w-full border-none text-slate-700 outline-none bg-inherit"
+                                th:id="username"
+                                th:name="username"
+                                th:field="*{username}"
+                                type="email"
+                        >
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <a
+                            class="self-end w-full text-blue-500 ml-2 text-sm pr-2 text-end hover:text-blue-700 duration-200 font-semibold"
+                            th:href="@{/account/forgot-password}"
+                    >
+                        Mot de passe oublié ?
+                    </a>
+                    <div class="my-3 min-w-[320px]">
+                        <div class="shadow rouded bg-white px-4 py-2 rounded">
+                            <div class="bg-slate-50 w-max text-slate-600 p-1.5 text-sm mb-1 rounded-md flex items-center gap-1 text-start">
+                                <label class="cursor-pointer" th:for="password">
+                                    Mot de passe
+                                </label>
+                                <strong class="text-red-400">*</strong>
+                            </div>
+                            <input
+                                    class="w-full border-none text-slate-700 outline-none bg-inherit"
+                                    th:id="password"
+                                    th:name="password"
+                                    th:field="*{password}"
+                                    type="password"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div th:replace="fragments/form/alert :: alert-danger(message='Invalid email or password')"
+                ></div>
+
+                <div th:replace="fragments/form/submit :: button(text='Connection')"></div>
+            </form>
+
+            <div th:replace="fragments/ui/accountLinking :: linking(login=false, signup=true, activation=true)"></div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/ui/general :: footer"></div>
+</body>
+</html>

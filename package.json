@@ -1,0 +1,20 @@
+{
+  "name": "web-genius-api",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "css:build": "tailwindcss -i styles.tailwind.css -o src/main/resources/static/css/main.css",
+    "css:watch": "tailwindcss -i styles.tailwind.css -o src/main/resources/static/css/main.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.0"
+  }
+}
