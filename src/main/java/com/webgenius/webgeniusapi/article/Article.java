@@ -9,6 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,14 +21,19 @@ public class Article {
 
     private String title;
 
+    private Integer readTime;
+
+    private String category;
+
+    private String channel;
+
     private String thumbnail;
 
-    private String pubAt;
+    private Date pubAt;
 
     private Integer reads;
 
-    private String content;
+    private Object content;
 
-    @DocumentReference
-    private User creator;
+    private ObjectId creator;
 }

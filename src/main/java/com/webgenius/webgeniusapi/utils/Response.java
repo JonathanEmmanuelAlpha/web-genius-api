@@ -1,15 +1,16 @@
 package com.webgenius.webgeniusapi.utils;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Value
 public class Response {
+
+    private String message;
 
     private ResponseType type;
 
-    private String message;
+    public static Response from(final String message, final ResponseType type) {
+
+        return new Response(message, type);
+    }
 }

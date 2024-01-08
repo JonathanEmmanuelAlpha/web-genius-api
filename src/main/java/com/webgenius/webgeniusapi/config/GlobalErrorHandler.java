@@ -1,6 +1,8 @@
 package com.webgenius.webgeniusapi.config;
 
 import com.webgenius.webgeniusapi.utils.Message;
+import com.webgenius.webgeniusapi.utils.Response;
+import com.webgenius.webgeniusapi.utils.ResponseType;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,19 +17,19 @@ public class GlobalErrorHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
-    public Message handleNotFound(final HttpServletRequest request, final Exception error) {
-        return Message.from("404 Not Found");
+    public Response handleNotFound(final HttpServletRequest request, final Exception error) {
+        return Response.from("404 Not Found", ResponseType.ERROR);
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
-    public Message handleAccessDenied(final HttpServletRequest request, final Exception error) {
-        return Message.from("Permission denied");
+    public Response handleAccessDenied(final HttpServletRequest request, final Exception error) {
+        return Response.from("Permission denied", ResponseType.ERROR);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
-    public Message handleInternalError(final HttpServletRequest request, final Exception error) {
-        return Message.from(error.getMessage());
+    public Response handleInternalError(final HttpServletRequest request, final Exception error) {
+        return Response.from(error.getMessage(), ResponseType.ERROR);
     }
 }

@@ -44,33 +44,29 @@ public class SecurityConfig {
             .authorizeHttpRequests((authorize) ->
                 authorize
                     .requestMatchers(
-                            "/",
-                            "/article",
-                            "/account/signup",
-                            "/account/signup/consumer",
-                            "css/**",
-                            "/img/**",
-                            "libs/**"
+                            "/api/v1/auth/signup",
+                            "/api/v1/auth/login-error",
+                            "/api/v1/articles/all"
                     ).permitAll()
-                    .requestMatchers("/dashboard/**").hasAuthority("AUTHOR")
-                    .requestMatchers("/dashboard/authors").hasAuthority("ADMIN")
-                    .requestMatchers("/dashboard/authors-requests").hasAuthority("ADMIN")
-                    .anyRequest().authenticated()
-            )
-            .formLogin(
+                    //.requestMatchers("/api/v1/dashboard/**").hasAuthority("AUTHOR")
+                    //.requestMatchers("/api/v1/dashboard/authors").hasAuthority("ADMIN")
+                    //.requestMatchers("/api/v1/dashboard/authors-requests").hasAuthority("ADMIN")
+                    .anyRequest().permitAll()
+            );
+            /*.formLogin(
                 form -> form
-                    .loginPage("/account/login")
-                    .loginProcessingUrl("/account/login")
-                        .failureForwardUrl("/account/login-error")
-                    .defaultSuccessUrl("/account/profile")
+                    .loginPage("/api/v1/auth/login")
+                    .loginProcessingUrl("/api/v1/auth/login")
+                        .failureForwardUrl("/api/v1/auth/login-error")
+                    .defaultSuccessUrl("/api/v1/auth/profile")
                     .permitAll()
             )
             .logout(
                 logout -> logout
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/account/logout"))
-                    .logoutSuccessUrl("/account/login")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/auth/logout"))
+                    .logoutSuccessUrl("/api/v1/auth/login")
                     .permitAll()
-            );
+            );*/
 
         return http.build();
     }

@@ -1,5 +1,6 @@
 package com.webgenius.webgeniusapi.user;
 
+import com.webgenius.webgeniusapi.dto.Login;
 import com.webgenius.webgeniusapi.dto.Profile;
 import com.webgenius.webgeniusapi.dto.Signup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -31,12 +29,14 @@ public class UserService {
 
     public List<User> findAllAuthorRequest() {
         return mongoTemplate.query(User.class)
-                .matching(Query.query(Criteria.where("authorRequest").is(true)))
+                .matching(Query.query(Criteria.where("hasAuthorDemand").is(true)))
                 .all();
     }
 
     public List<User> findAllAuthors() {
-        return repository.findByRolesIn(Role.AUTHOR);
+        return mongoTemplate.query(User.class)
+                .matching(Query.query(Criteria.where("role").is(Role.AUTHOR)))
+                .all();
     }
 
     public User createUser(Signup data) {
@@ -45,16 +45,20 @@ public class UserService {
 
         user.setPseudo("Unknown-" + date.getTime());
         user.setBio("Empty");
-        user.setPicture("uploads/profiles/default.png");
+        user.setPicture("/uploads/profiles/default.png");
         user.setEmail(data.getEmail());
         user.setPassword(passwordEncoder.encode(data.getPassword()));
-        user.setRoles(Collections.singleton(Role.USER));
+        user.setRole(Role.USER);
         user.setVerified(false);
         user.setCreateAt(date);
 
         repository.save(user);
 
         return user;
+    }
+
+    public User authenticate(Login data) {
+        return repository.findByEmail(data.getUsername());
     }
 
     public User updateUser(Profile data) {
@@ -83,15 +87,36 @@ public class UserService {
     }
 
     public void addRequest(User user) {
-        if(!user.getRoles().contains(Role.AUTHOR) && user.isAuthorRequest()) {
-            return;
-        }
-
-        final Date date = new Date(System.currentTimeMillis());
+        Update update = new Update();
+        update.set("hasAuthorDemand", true);
 
         mongoTemplate.update(User.class)
-                .matching(Criteria.where("email").is(user.getUsername()))
-                .apply(new Update().push("authorRequest").value(true))
-                .first();
+                .matching(Criteria.where("_id").is(user.getId()))
+                .apply(update)
+                .all();
+    }
+
+    public void addAuthor(User targetUser) {
+        Update update = new Update();
+        update.set("hasAuthorDemand", false);
+        update.set("role", Role.AUTHOR);
+        update.set("updateAt", new Date(System.currentTimeMillis()));
+
+        mongoTemplate.update(User.class)
+                .matching(Criteria.where("_id").is(targetUser.getId()))
+                .apply(update)
+                .all();
+    }
+
+    public void rejectAuthor(User targetUser) {
+        Update update = new Update();
+        update.set("hasAuthorDemand", false);
+        update.set("role", Role.USER);
+        update.set("updateAt", new Date(System.currentTimeMillis()));
+
+        mongoTemplate.update(User.class)
+                .matching(Criteria.where("_id").is(targetUser.getId()))
+                .apply(update)
+                .all();
     }
 }

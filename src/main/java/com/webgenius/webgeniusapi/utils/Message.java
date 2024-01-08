@@ -5,7 +5,7 @@ import lombok.Value;
 @Value
 public class Message {
 
-    private String responseMessage;
+    private String message;
 
     public static Message from(final String responseMessage) {
         return new Message(responseMessage);

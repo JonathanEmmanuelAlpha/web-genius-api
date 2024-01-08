@@ -1,6 +1,5 @@
 package com.webgenius.webgeniusapi.user;
 
-import com.webgenius.webgeniusapi.article.Article;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,16 +7,13 @@ import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -38,7 +34,7 @@ public class User implements UserDetails {
 
     private String password;
 
-    private Set<Role> roles;
+    private Role role;
 
     private boolean verified;
 
@@ -46,16 +42,11 @@ public class User implements UserDetails {
 
     private Date updateAt;
 
-    private boolean authorRequest;
-
-    @DocumentReference
-    private List<Article> articles;
+    private boolean hasAuthorDemand;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles
-                .stream()
-                .map((role)-> new SimpleGrantedAuthority(role.name())).collect(Collectors.toList());
+        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override

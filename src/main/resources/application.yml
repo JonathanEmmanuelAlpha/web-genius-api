@@ -8,11 +8,17 @@ spring:
   data:
     mongodb:
       database: web-genius
-      uri: mongodb+srv://<mongodb_user>:<mongo_dbpassword>@<mongodb_rui>
+      uri: mongodb+srv://emmanueljonathant453:BLQZOTm2MOTZUM1n@grounddata.qepd9bf.mongodb.net/
 
 
 application:
   client-origin-url: http://localhost:3000/
+  security:
+    jwt:
+      secret-key: 5c75661c5114b6a05847dde3d419ff321417bbf00a8e1d4e11f37805eded86d6
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
 
 server:
   error:
